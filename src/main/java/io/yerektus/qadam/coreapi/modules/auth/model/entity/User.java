@@ -1,14 +1,29 @@
 package io.yerektus.qadam.coreapi.modules.auth.model.entity;
 
 import io.yerektus.qadam.coreapi.common.entity.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @Table("users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class User extends BaseEntity {
+
+    @Column("first_name")
+    private String firstname;
+
+    @Column("last_name")
+    private String lastname;
+
+    @Column("phone_number")
+    private String phoneNumber;
 
     @Column("email")
     private String email;
@@ -18,23 +33,4 @@ public class User extends BaseEntity {
 
     @Column("role")
     private String role;
-
-    public User() {}
-
-    public User(UUID id, String email, String passwordHash, String role, LocalDateTime createdAt) {
-        setId(id);
-        this.email = email;
-        this.passwordHash = passwordHash;
-        this.role = role;
-        setCreatedAt(createdAt);
-    }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
 }

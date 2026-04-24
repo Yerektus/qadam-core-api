@@ -1,7 +1,8 @@
-package io.yerektus.qadam.coreapi.modules.auth.controller;
+package io.yerektus.qadam.coreapi.modules.auth;
 
 import io.yerektus.qadam.coreapi.modules.auth.model.dto.*;
 import io.yerektus.qadam.coreapi.modules.auth.service.AuthService;
+import io.yerektus.qadam.coreapi.modules.auth.service.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -16,14 +17,16 @@ import java.util.UUID;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtService jwtService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JwtService jwtService) {
         this.authService = authService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
-    public Mono<UserDto> register(@Valid @RequestBody RegisterRequest request) {
-        return authService.register(request);
+    public Mono<RegisterResponse> register(@Valid @RequestBody RegisterBody body) {
+        return authService.register(body);
     }
 
     @PostMapping("/login")

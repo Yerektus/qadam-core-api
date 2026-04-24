@@ -1,4 +1,4 @@
-package io.yerektus.qadam.coreapi.modules.auth.filter;
+package io.yerektus.qadam.coreapi.modules.auth;
 
 import io.yerektus.qadam.coreapi.modules.auth.service.JwtService;
 import org.springframework.http.HttpHeaders;
