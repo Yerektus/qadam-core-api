@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface AccessTokenRepository extends ReactiveCrudRepository<AccessToken, UUID> {
     Mono<AccessToken> findByToken(String token);
+    Mono<Boolean> existsByToken(String token);
     Mono<Void> deleteByToken(String token);
     Mono<Void> deleteAllByUserId(UUID userId);
 }
