@@ -8,5 +8,5 @@ import io.yerektus.qadam.coreapi.modules.leads.model.entity.Lead;
 import reactor.core.publisher.Mono;
 
 public interface LeadsRepository extends ReactiveCrudRepository<Lead, UUID> {
-    Mono<Boolean> existsByEmail(String email); 
+    Mono<Boolean> existsByEmail(String email);
 }
