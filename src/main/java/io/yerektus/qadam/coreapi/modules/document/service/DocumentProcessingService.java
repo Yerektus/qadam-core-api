@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -71,6 +71,7 @@ public class DocumentProcessingService {
 
     private Mono<Document> updateStatus(Document doc, String status) {
         doc.setStatus(status);
+        doc.setUpdatedAt(LocalDateTime.now());
         return documentRepository.save(doc);
     }
 }

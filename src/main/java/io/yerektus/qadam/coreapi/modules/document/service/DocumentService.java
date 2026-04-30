@@ -57,6 +57,7 @@ public class DocumentService {
                     doc.setDescription(description);
                     doc.setStatus("PROCESSING");
                     doc.setCreatedAt(LocalDateTime.now());
+                    doc.setUpdatedAt(LocalDateTime.now());
 
                     return documentRepository.save(doc);
                 })
@@ -77,6 +78,7 @@ public class DocumentService {
                                 .flatMap(bytes -> localStorageService.store(userId, documentId, fileName, bytes))
                                 .flatMap(filePath -> {
                                     saved.setFilePath(filePath);
+                                    saved.setUpdatedAt(LocalDateTime.now());
                                     return documentRepository.save(saved);
                                 });
                 })
