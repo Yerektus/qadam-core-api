@@ -30,6 +30,7 @@ public class GenerationService {
     public Mono<GenerationResponse> generate(UUID userId, GenerationRequest request) {
         return rateLimitService.checkLimit(userId)
                 .then(vectorStoreService.search(request.userRequest(), userId))
+                .onErrorReturn(Collections.emptyList())
                 .flatMap(documents -> {
                     // Build context from retrieved documents
                     String context = documents.stream()
@@ -50,8 +51,10 @@ public class GenerationService {
 
                     // Build prompt messages
                     String systemPrompt = """
-                            Ты — профессиональный юрист. Используй только предоставленные документы.
-                            Если данных недостаточно — сообщи об этом явно. Отвечай на языке запроса.""";
+                            Ты — профессиональный юрист. Составляй юридический документ по запросу пользователя.
+                            Если предоставлен контекст из загруженных документов, используй его как справочную основу.
+                            Если важных данных не хватает, не отказывайся от генерации: добавляй понятные плейсхолдеры в квадратных скобках.
+                            Возвращай только текст документа без пояснений о процессе генерации. Отвечай на языке запроса.""";
 
                     String userPrompt = """
                             [КОНТЕКСТ]
@@ -64,7 +67,7 @@ public class GenerationService {
                             
                             [ДОПОЛНИТЕЛЬНО]
                             %s""".formatted(
-                            context,
+                            context.isBlank() ? "Загруженный контекст отсутствует. Составь документ на основе задачи пользователя." : context,
                             request.documentType(),
                             request.userRequest(),
                             request.additionalContext() != null ? request.additionalContext() : ""
